@@ -6,6 +6,10 @@ Broomy enterprises has recently extended its reach to Mars! Their suite of state
 
 Two teams were assembled to guide the process of scientific discovery. A crack-team of analysists and physicists, part of the Mars Topology Team, are constantly monitoring Mars and making predictions where the rovers will have the highest likelihood of success. Once a so called "hot-spot" has been identified, they give it a name and relay that information to the Mars Rover Team who deploy and command their rovers to the most valuable dig sites. From there the rovers will autonomously scan the area and report back with a groundbreaking, revolutionary discovery or a failure.
 
+## Your Task
+
+Your task is to build the software that will allow the Mars Topology team to register hot-spots and enable the the Mars Rover team to deploy and move their rovers towards the dig sites. It should be possible to view all active hot-spots that have rovers deployed, their locations and the remaining dig sites.
+
 ## Registering a hot-spot
 
 The Mars Topology team uses another software to scan the surface of Mars in pursuit of hot-spots. Once such an area has been identified, it is registered and catalogued.
@@ -53,3 +57,12 @@ Whenever a rover is moved towards the site of a potential scientific discovery, 
 ## Rescuing a downed rover
 
 If a rover attempted to go out of bounds, then it is stuck and awaiting rescue. Another rover that ends its movement adjacent to a downed rover will automatically repair it.
+
+## An example hot spot
+
+	{
+		"hot_spot": "Mawrth Vallis",
+		"dimensions": "50 50",
+		"yield": "scarce",
+		"dig_sites": ["34 19", "1 1", "42 5", "21 27", "19 50", "19 40", "5 10"]
+	}
