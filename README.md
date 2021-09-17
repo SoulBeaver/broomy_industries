@@ -4,11 +4,7 @@ Broomy enterprises has recently extended its reach to Mars! Their suite of state
 
 ## The Mission
 
-Two teams were assembled to guide the process of scientific discovery. A crack-team of analysists and physicists, part of the Mars Topology Team, are constantly monitoring Mars and making predictions where the rovers will have the highest likelihood of success. Once a so called "hot-spot" has been identified, they give it a name and relay that information to the Mars Rover Team who deploy and command their rovers to the most valuable dig sites. From there the rovers will autonomously scan the area and report back with a groundbreaking, revolutionary discovery or a failure.
-
-## Your Task
-
-Your task is to build the software that will allow the Mars Topology team to register hot-spots and enable the the Mars Rover team to deploy and move their rovers towards the dig sites. It should be possible to view all active hot-spots that have rovers deployed, their locations and the remaining dig sites.
+Two teams were assembled to guide the process of scientific discovery. A crack-team of analysists and physicists, part of the Mars Topology Team, are constantly monitoring Mars and making predictions where the rovers will have the highest likelihood of success. Once a so called "hot-spot" has been identified, they give it a name and make it available to the Mars Rover Team. The MRT are the ones who deploy and command rovers to the most valuable dig sites. From there the rovers will autonomously scan the area and report back with a groundbreaking, revolutionary discovery or a failure.
 
 ## Registering a hot-spot
 
@@ -42,27 +38,34 @@ To move a placed rover, it must be identified by the hot-spot and its coordinate
 
 	{
 		"hot_spot": "Mawrth Vallis",
-		"rover_location_heading": "1 2 N",
+		"rover_location_heading": "1 2",
 		"commands": ["L", "M", "L"]
 	}
 
 The last part of the command is the movement sequence. “LML” means, ‘turn left, move, turn left’. 
 
-Additionally, the rover must not drive off the plateau. Should a human error occur, e.g. should an operator try to drive the multi-million-dollar rover off the plateau, the rover should stop and await rescue. Once a rover has stopped moving (and finished its scan), it is open to new movement commands again.
+It is possible to move multiple rovers at the same time as well:
+
+	[{
+		"hot_spot": "Mawrth Vallis",
+		"rover_location_heading": "1 2",
+		"commands": ["L", "M", "L"]
+	}, {
+		"hot_spot": "Evergreen Terrace",
+		"rover_location_heading": "3 0",
+		"commands": ["M", "M", "R", "M"]
+	}]
+
+If a rover went out of bounds, or if two rovers cross paths by moving across the same grid square, then it is stuck and awaiting rescue. A stuck rover cannot accept any other commands until it has been rescued. Another rover that ends its movement adjacent to a downed rover will automatically repair it.
+
+Once a rover has stopped moving, it will report back with its current state, location and heading. It is then open to new movement commands.
 
 ## Making a Discovery
 
-Whenever a rover is moved towards the site of a potential scientific discovery, it automatically scans the surrounding area and returns a message indicating that a discovery has been made or that the scan was inconclusive. The success rate of the scan depends on the richness or scarcity of the plateau. A scarce plateau will always have a 50% chance that no discovery was made, but a rich plateau will always result in a discovery. If the site does not contain a potential discovery, no scan attempt is made. 
+Whenever a rover is moved towards the site of a potential scientific discovery, it automatically scans the surrounding area and notifies the Mars Discovery Team that a discovery has been made. In the event of a discovery or failure, it also notifies the Mars Topology service which removes the dig site from the registered hot-spot. Once all registered hot-spots have been identified, the area is designated as "cold" and removed from the search list. 
 
-## Rescuing a downed rover
+The success rate of the scan depends on the richness or scarcity of the plateau. A scarce plateau will always have a 50% chance that no discovery was made, but a rich plateau will always result in a discovery. If the site does not contain a potential discovery, no scan attempt is made. 
 
-If a rover attempted to go out of bounds, then it is stuck and awaiting rescue. Another rover that ends its movement adjacent to a downed rover will automatically repair it.
+## Extracting rovers from a cold hot-spot
 
-## An example hot spot
-
-	{
-		"hot_spot": "Mawrth Vallis",
-		"dimensions": "50 50",
-		"yield": "scarce",
-		"dig_sites": ["34 19", "1 1", "42 5", "21 27", "19 50", "19 40", "5 10"]
-	}
+Once all dig-sites have been identified, the rovers are recalled by the Rover Extraction team. They are notified automatically once a hot-spot has grown cold and send their own special command, "E" for extraction, to the rovers. The command locks the rovers, making them unable to receive or perform any other command. Some time therafter the rovers are picked up and placed back into storage for use in the next hot-spot.
